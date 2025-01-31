@@ -14,9 +14,6 @@ spec:
         - podSelector:
             matchLabels:
               app: webdb  # Autorise seulement les pods webdb
-        - podSelector:
-            matchLabels:
-              app: webnodb  # Autorise seulement les pods webnodb
       ports:
         - protocol: TCP
           port: 27017  # Port MongoDB

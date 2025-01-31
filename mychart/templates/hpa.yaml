@@ -16,7 +16,7 @@ spec:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 15  # Se déclenche si utilisation CPU > 60%
+        averageUtilization: 60 # Se déclenche si utilisation CPU > 60%
 
 ---
 apiVersion: autoscaling/v2

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webdb-deployment
+  namespace: qnempont
+spec:
+  replicas: {{ .Values.applications.webdb.replicaCount }} #3
+  selector:
+    matchLabels:
+      app: webdb
+  template:
+    metadata:
+      labels:
+        app: webdb
+    spec:
+      containers:
+      - name: webdb
+        image: dylanlartiste/simple_flask_app-flask_with_db:latest
+        ports:
+        - containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5 #5 secondes pour laisser le conteneur démarrer
+          periodSeconds: 10 #10 secondes entre chaque vérification
+          timeoutSeconds: 1 #1 seconde pour chaque vérification
+        env :
+        - name: MONGO_URI
+          value: mongodb://mongodb-service:27017
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "100m"
+          limits:
+            memory: "200Mi"
+            cpu: "200m"

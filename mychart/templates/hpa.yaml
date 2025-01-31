@@ -1,0 +1,40 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: webdb-hpa
+  namespace: qnempont
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: webdb-deployment
+  minReplicas: 3  # On garde au moins 3 pods pour webdb
+  maxReplicas: 10 # Limite à 10 pods
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 15  # Se déclenche si utilisation CPU > 60%
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: webnodb-hpa
+  namespace: qnempont
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: webnodb-deployment
+  minReplicas: 1  # webnodb démarre avec un seul pod
+  maxReplicas: 10 # Peut scaler jusqu'à 10 pods
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60  # Se déclenche si utilisation CPU > 60%
